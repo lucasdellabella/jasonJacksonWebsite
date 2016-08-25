@@ -1,0 +1,37 @@
+/* Syntax for rgb is rgb(r, g, b, alpha) */
+
+html {
+    margin: 0;
+    padding: 0;
+    background: url(jason.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.icon-bg {
+    height: 100px;
+    width: 100px;
+    margin: 3%;
+    float: left;
+    clear: both;
+
+    /* Gradientize Icons */
+    background: -webkit-linear-gradient(right, rgba(255,255,255,0.3), rgba(255,255,255,0.8)); /* For Safari */
+    background: -o-linear-gradient(right, rgba(255,255,255,0.3), rgba(255,255,255,0.8)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, rgba(255,255,255,0.3), rgba(255,255,255,0.8)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, rgba(255,255,255,0.3), rgba(255,255,255,0.8)); /* Standard syntax (must be last) */
+}
+
+.icon {
+    -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.8)))
+}
+
+#graph {
+    position: fixed;
+    top: 25%;
+    right: 0;
+    /*background: white;*/
+}
