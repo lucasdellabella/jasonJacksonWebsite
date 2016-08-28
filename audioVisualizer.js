@@ -9,12 +9,12 @@ function renderGraph() {
 }
 
 $(document).ready(function () {
-    var svgHeight = 100;
+    var svgHeight = 300;
     var svgWidth = 600;
     var barPadding = 1;
 
     for (var i = 0; i < 100; i++) {
-        mockData.push(Math.random() * 10 + 30);
+        mockData.push(Math.random() * 10 + 65);
     }
 
     function createSvg(parent, height, width) {
@@ -32,21 +32,20 @@ $(document).ready(function () {
         .angle(function(d) { return count++/mockData.length * Math.PI * 2; });
 
     var circleRad = 50;
-    var circleShift = 50;
-
-    graph.append('circle')
-        .attr('cx', 50)
-        .attr('cy', 50)
-        .attr('r',  50)
-        .style('fill', 'white');
+    var circleShift = 200;
 
     graph.append('path')
         .data([mockData])
         .attr('d', radialLine)
         .attr('stroke', 'red')
         .attr('stroke-width', 1)
-        .attr('fill', 'white')
-        .attr('transform', 'translate(' + circleShift/2
-                    + ',' + circleShift/2 + ')');
-})
+        .attr('fill', 'rgba(0,0,0,0')
+        .attr('transform', 'translate(' + circleShift
+                    + ',' + circleShift + ')');
 
+    graph.append('circle')
+        .attr('cx', circleShift)
+        .attr('cy', circleShift)
+        .attr('r',  50)
+        .style('fill', 'white');
+})
