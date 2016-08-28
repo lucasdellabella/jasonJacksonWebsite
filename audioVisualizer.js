@@ -1,6 +1,6 @@
 var sampleData = [12, 19, 8, 17, 22, 9, 15, 12, 22, 25, 17, 12, 25, 16, 12, 19, 8, 17, 22, 9, 15, 12, 22, 25, 17, 12, 25, 16];
 //var sampleData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-
+var mockData = [];
 function renderGraph() {
     requestAnimationFrame(renderGraph);
 
@@ -13,6 +13,10 @@ $(document).ready(function () {
     var svgWidth = 600;
     var barPadding = 1;
 
+    for (var i = 0; i < 100; i++) {
+        mockData.push(Math.random() * 10 + 30);
+    }
+
     function createSvg(parent, height, width) {
         return d3.select(parent)
                  .append('svg')
@@ -22,9 +26,10 @@ $(document).ready(function () {
 
     var graph = createSvg('#graph', svgHeight, svgWidth);
 
+    var count = 0;
     var radialLine = d3.radialLine()
         .radius(function(d) { return d; })
-        .angle(Math.PI/4);
+        .angle(function(d) { return count++/mockData.length * Math.PI * 2; });
 
     var circleRad = 50;
     var circleShift = 50;
@@ -36,11 +41,11 @@ $(document).ready(function () {
         .style('fill', 'white');
 
     graph.append('path')
-        .datum(sampleData)
+        .data([mockData])
         .attr('d', radialLine)
         .attr('stroke', 'red')
-        .attr('stroke-width', 3)
-        .attr('fill', 'green')
+        .attr('stroke-width', 1)
+        .attr('fill', 'white')
         .attr('transform', 'translate(' + circleShift/2
                     + ',' + circleShift/2 + ')');
 })
