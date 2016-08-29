@@ -1,21 +1,23 @@
-var sampleData = [12, 19, 8, 17, 22, 9, 15, 12, 22, 25, 17, 12, 25, 16, 12, 19, 8, 17, 22, 9, 15, 12, 22, 25, 17, 12, 25, 16];
-//var sampleData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-var mockData = [];
-function renderGraph() {
-    requestAnimationFrame(renderGraph);
-
-    // Load freq data into array
-
-}
-
 $(document).ready(function () {
-    var svgHeight = 300;
-    var svgWidth = 600;
+
+    // Init WebAudio API vars
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var audioElement = document.getElementById('audioElement');
+    var audioSrc = audioCtx.createMediaElementSource(audioElement);
+    var analyser = audioCtx.createAnalyser();
+
+    audioSrc.connect(analyser);
+    audioSrc.connect(audioCtx.destination);
+
+    var frequencyData = new Uint8Array(200);
+
+    // Set up SVG state
+    var svgHeight = 1000;
+    var svgWidth = 1000;
     var barPadding = 1;
 
-    for (var i = 0; i < 100; i++) {
-        mockData.push(Math.random() * 10 + 65);
-    }
+    var circleRad = 50;
+    var circleShift = 200;
 
     function createSvg(parent, height, width) {
         return d3.select(parent)
@@ -26,20 +28,38 @@ $(document).ready(function () {
 
     var graph = createSvg('#graph', svgHeight, svgWidth);
 
-    var count = 0;
     var radialLine = d3.radialLine()
-        .radius(function(d) { return d; })
-        .angle(function(d) { return count++/mockData.length * Math.PI * 2; });
+        .radius(function(d) { return circleRad + 10 + d / 1.5; })
+        .angle((function() {
+            var count = 0;
+            return function(d) { 
+                return count++ / frequencyData.length * Math.PI * 2; 
+            }
+        })());
 
-    var circleRad = 50;
-    var circleShift = 200;
+    function renderGraph() {
+        requestAnimationFrame(renderGraph);
+
+        // Load freq data into array
+        analyser.getByteFrequencyData(frequencyData);
+
+        // Update d3 chart
+        graph.selectAll('path')
+            .data([frequencyData])
+            .attr('d', radialLine)
+            .attr('stroke', 'white')
+            .attr('stroke-width', 3)
+            .attr('fill', 'rgba(0,0,0,0)')
+            .attr('transform', 'translate(' + circleShift
+                        + ',' + circleShift + ')');
+    }
 
     graph.append('path')
-        .data([mockData])
+        .data([frequencyData])
         .attr('d', radialLine)
-        .attr('stroke', 'red')
-        .attr('stroke-width', 1)
-        .attr('fill', 'rgba(0,0,0,0')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 3)
+        .attr('fill', 'rgba(0,0,0,0)')
         .attr('transform', 'translate(' + circleShift
                     + ',' + circleShift + ')');
 
@@ -48,4 +68,7 @@ $(document).ready(function () {
         .attr('cy', circleShift)
         .attr('r',  50)
         .style('fill', 'white');
+
+    audioElement.play();
+    renderGraph();
 })
