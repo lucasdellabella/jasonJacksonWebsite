@@ -16,7 +16,7 @@ $(document).ready(function () {
     var SVG_WIDTH = 1000;
 
     var CIRCLE_RADIUS = 50;
-    var CIRCLE_SHIFT = 200;
+    var CIRCLE_SHIFT = 300;
 
     function createSvg(parent, height, width) {
         return d3.select(parent)
@@ -69,8 +69,8 @@ $(document).ready(function () {
                     + ',' + CIRCLE_SHIFT + ')');
 
     graph.append('circle')
-        .attr('cx', CIRCLE_SHIFT
-        .attr('cy', CIRCLE_SHIFT
+        .attr('cx', CIRCLE_SHIFT)
+        .attr('cy', CIRCLE_SHIFT)
         .attr('r',  50)
         .style('fill', 'white');
 
